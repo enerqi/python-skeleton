@@ -36,15 +36,32 @@ from setuptools import setup, find_packages
 with open('README.md') as f:
     readme = f.read()
 
-setup(
-    name='${NAME}',
-    version='0.1.0',
-    description='',
-    long_description=readme,
-    url='',
-    license='',
-    packages=find_packages(exclude=('tests', 'docs'))
-)
+if __name__ == '__main__':
+    setup(
+        name='${NAME}',
+        version='0.1.0',
+        description='',
+        long_description=readme,
+        url='',
+        license='',
+        packages=find_packages(exclude=('tests', 'docs')),
+        setup_requires=['pytest-runner', 'flake8'],
+        tests_require=['pytest']
+    )
+EOL
+}
+
+function write_setup_cfg {
+    cat ${NAME}/setup.cfg <<EOL
+[flake8]
+max-line-length = 120
+
+[aliases]
+test=pytest
+
+[tool:pytest]
+addopts = --doctest-modules --ignore build
+
 EOL
 }
 
@@ -161,14 +178,6 @@ ENV/
 EOL
 }
 
-function write_tests_setuppythonpath {
-
-    cat > ${NAME}/tests/setuppythonpath.py <<EOL
-import os
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-EOL
-}
 
 function write_test_requirements {
 
@@ -176,12 +185,21 @@ function write_test_requirements {
 -r requirements.txt
 hypothesis
 hypothesis-pytest
+flake8
+ipython
 pytest
 pytest-capturelog
 pytest-cov
 pytest-mock
 pytest-pep8
-flake8
+pytest-runner
+EOL
+}
+
+function write_pytest_ini {
+    cat > ${NAME}/pytest.ini <<EOL
+[pytest]
+addopts = --doctest-modules --ignore build
 EOL
 }
 
@@ -194,6 +212,11 @@ if [[ ! -e ${NAME}/setup.py ]]
         write_setuppy
 fi
 
+if [[ ! -e ${NAME}/setup.cfg ]]
+    then
+        write_setup_cfg
+fi
+
 if [[ ! -e ${NAME}/requirements-test.txt ]]
     then
         write_test_requirements
@@ -202,12 +225,13 @@ fi
 mkdir -p ${NAME}/tests
 touch "${NAME}/tests/__init__.py"
 
-if [[ ! -e ${NAME}/tests/setuppythonpath.py ]]
-    then
-        write_tests_setuppythonpath
-fi
 
 if [[ ! -e ${NAME}/.gitignore ]]
     then
         write_gitignore
+fi
+
+if [[ ! -e ${NAME}/pytest.ini ]]
+    then
+        write_pytest_ini
 fi
