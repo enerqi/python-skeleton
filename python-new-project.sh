@@ -190,7 +190,9 @@ ipython
 pytest
 pytest-capturelog
 pytest-cov
+pytest-flake8
 pytest-mock
+pytest-mypy
 pytest-pep8
 pytest-runner
 EOL
