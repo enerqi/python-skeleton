@@ -52,7 +52,7 @@ EOL
 }
 
 function write_setup_cfg {
-    cat ${NAME}/setup.cfg <<EOL
+    cat > ${NAME}/setup.cfg <<EOL
 [flake8]
 max-line-length = 120
 
@@ -183,9 +183,9 @@ function write_test_requirements {
 
     cat > ${NAME}/requirements-test.txt <<EOL
 -r requirements.txt
+flake8
 hypothesis
 hypothesis-pytest
-flake8
 ipython
 pytest
 pytest-capturelog
@@ -208,6 +208,7 @@ EOL
 
 touch ${NAME}/README.md
 touch ${NAME}/requirements.txt
+touch ${NAME}/mypy.ini
 
 if [[ ! -e ${NAME}/setup.py ]]
     then
@@ -237,3 +238,7 @@ if [[ ! -e ${NAME}/pytest.ini ]]
     then
         write_pytest_ini
 fi
+
+
+# Finally try to setup a virtual environment if the program is found.
+hash conda 2>/dev/null && conda create -n ${NAME}
