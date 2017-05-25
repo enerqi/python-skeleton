@@ -181,12 +181,12 @@ EOL
 
 function write_test_requirements {
 
-    cat > ${NAME}/requirements-test.txt <<EOL
--r requirements.txt
+    cat > ${NAME}/requirements-to-freeze.txt <<EOL
 flake8
 hypothesis
 hypothesis-pytest
 ipython
+pudb
 pytest
 pytest-capturelog
 pytest-cov
@@ -194,7 +194,11 @@ pytest-flake8
 pytest-mock
 pytest-mypy
 pytest-pep8
+pytest-profiling
+pytest-pudb
 pytest-runner
+pytest-sugar
+pytest-xdist
 EOL
 }
 
@@ -205,10 +209,74 @@ addopts = --doctest-modules --ignore build
 EOL
 }
 
+function write_mypy {
+    cat > ${NAME}/mypy.ini <<EOL
+[mypy]
+ignore_missing_imports = true
+EOL
+}
 
-touch ${NAME}/README.md
+function write_readme {
+    cat > ${NAME}/README.md <<EOL
+# `python -c "import sys; print(sys.argv[1].title())" ${NAME}`
+
+EOL
+    cat >> ${NAME}/README.md <<"EOL"
+## Python Environment
+
+Developed and works best with `python 3.6.1`+.
+
+Once a VM environment is setup with `conda` or `virtualenv` the project dependencies can be restored with:
+
+`pip install -r requirements.txt`
+
+
+## Tests
+
+Run linter code quality checks:
+
+`python setup.py flake8` or `pytest --flake8 app`
+
+
+Run static type checker:
+
+`pytest --mypy app` or `mypy app`
+
+
+Run all functional tests:
+
+`python setup.py test` or `pytest tests`
+
+
+## Configuration
+...
+
+EOL
+}
+
+function write_conftest {
+    cat > ${NAME}/tests/conftest.py <<EOL
+import os
+import sys
+
+import pytest
+
+PROJECT_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+sys.path.insert(0, PROJECT_ROOT_DIR)
+EOL
+}
+
 touch ${NAME}/requirements.txt
-touch ${NAME}/mypy.ini
+
+if [[ ! -e ${NAME}/README.md ]]
+    then
+        write_readme
+fi
+
+if [[ ! -e ${NAME}/mypy.ini ]]
+    then
+        write_mypy
+fi
 
 if [[ ! -e ${NAME}/setup.py ]]
     then
@@ -220,13 +288,18 @@ if [[ ! -e ${NAME}/setup.cfg ]]
         write_setup_cfg
 fi
 
-if [[ ! -e ${NAME}/requirements-test.txt ]]
+if [[ ! -e ${NAME}/requirements-to-freeze.txt ]]
     then
         write_test_requirements
 fi
 
 mkdir -p ${NAME}/tests
 touch "${NAME}/tests/__init__.py"
+
+if [[ ! -e ${NAME}/tests/conftest.py ]]
+    then
+        write_conftest
+fi
 
 
 if [[ ! -e ${NAME}/.gitignore ]]
@@ -239,6 +312,5 @@ if [[ ! -e ${NAME}/pytest.ini ]]
         write_pytest_ini
 fi
 
-
 # Finally try to setup a virtual environment if the program is found.
-hash conda 2>/dev/null && conda create -n ${NAME}
+hash conda 2>/dev/null && conda info --envs | grep ${NAME} || conda create -n ${NAME}
