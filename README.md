@@ -19,8 +19,9 @@ It's easy to get library/tool version mismatches when not working in an isolated
 - Add `~/anaconda3/bin` (or anaconda etc. as per install documentation) to the front of PATH (so it comes before globally installed python)
 - `conda create -n projectname` to create a new virtual environment somewhere under ~/anaconda3.
 - `source (activate|deactivate) projectname` to use/turn off that isolated environment.
-- Normally we need to make the IDE/editor/tools aware of which python interpreter we are using: `~/anaconda3/bin/python`.
-- Use `pip` to install any required dependencies into the isolated environment: `pip install -r requirements-test.txt` (or requirements.txt etc.)
+- Normally we need to make the IDE/editor/tools aware of which python interpreter we are using per project, e.g. `~//anaconda3/envs/my-environment-name/bin/python`.
+- Use `pip` to install any required dependencies into the isolated environment: `pip install -r requirements-to-freeze.txt` (or requirements.txt etc.)
+- Freeze the versions when the project stabilises: `pip freeze > requirements.txt`
 
 ## Import Style
 
@@ -119,4 +120,12 @@ Install the python dependency `pytest-cov` into the virtual environment. See `py
 
 If using python3 and specificaly python3.5+ we can use type hints, that at least serve as minimal documentation.
 
-The [http://mypy.readthedocs.io/en/latest/](mypy) project is a linter that will try to check those types statically. It is however, an alpha status project.
+The [http://mypy.readthedocs.io/en/latest/](mypy) project is a linter that will try to check those types statically. It is however, an alpha status project, despite being > 5 years old.
+
+To make mypy quiet when it finds 3rd party code that does not have any type annotations have a `mypy.ini` file:
+
+```
+[mypy]
+python_version = 3.6
+ignore_missing_imports = true
+```
