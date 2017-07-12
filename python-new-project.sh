@@ -212,6 +212,7 @@ EOL
 function write_mypy {
     cat > ${NAME}/mypy.ini <<EOL
 [mypy]
+python_version = 3.6
 ignore_missing_imports = true
 EOL
 }
@@ -312,5 +313,5 @@ if [[ ! -e ${NAME}/pytest.ini ]]
         write_pytest_ini
 fi
 
-# Finally try to setup a virtual environment if the program is found.
-hash conda 2>/dev/null && conda info --envs | grep ${NAME} || conda create -n ${NAME}
+# Finally try to setup a virtual environment if the program is found and the env does not exist.
+hash conda 2>/dev/null && conda info --envs | grep ${NAME} || conda create -n ${NAME} python=3.6
