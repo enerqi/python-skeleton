@@ -19,6 +19,7 @@ if [[ -d ${NAME} ]]
 fi
 
 mkdir -p ${NAME}
+mkdir -p ${NAME}/app
 
 function cleanupFailedAttempt {
     if [[ $directoryAlreadyExisted = false ]]
@@ -31,23 +32,11 @@ trap cleanupFailedAttempt ERR
 
 function write_setuppy {
     cat > ${NAME}/setup.py <<EOL
-from setuptools import setup, find_packages
+from setuptools import setup
 
-with open('README.md') as f:
-    readme = f.read()
-
-if __name__ == '__main__':
-    setup(
-        name='${NAME}',
-        version='0.1.0',
-        description='',
-        long_description=readme,
-        url='',
-        license='',
-        packages=find_packages(exclude=('tests', 'docs')),
-        setup_requires=['pytest-runner', 'flake8'],
-        tests_require=['pytest']
-    )
+setup(setup_requires=['flake8', 'pbr', 'pytest-runner'],
+      pbr=True,
+      tests_require=['pytest'])
 EOL
 }
 
@@ -59,8 +48,24 @@ max-line-length = 120
 [aliases]
 test=pytest
 
-[tool:pytest]
-addopts = --doctest-modules --ignore build
+[test]
+addopts = tests
+
+[pytest]
+addopts = --cov app --doctest-modules --ignore build --verbose
+
+[metadata]
+name =
+author =
+author-email =
+summary =
+description-file = README.md
+home-page =
+requires-python = >= 3.6
+
+[files]
+packages =
+    app
 
 EOL
 }
@@ -179,13 +184,15 @@ EOL
 }
 
 
-function write_test_requirements {
+function write_dev_requirements {
 
-    cat > ${NAME}/requirements-to-freeze.txt <<EOL
+    cat > ${NAME}/dev-requirements.in <<EOL
+bpython
 flake8
 hypothesis
 hypothesis-pytest
 ipython
+pip-tools
 pudb
 pytest
 pytest-capturelog
@@ -199,6 +206,14 @@ pytest-pudb
 pytest-runner
 pytest-sugar
 pytest-xdist
+EOL
+}
+
+function write_requirements {
+    cat > ${NAME}/requirements.in <<EOL
+daiquiri
+docopt
+pbr
 EOL
 }
 
@@ -225,11 +240,20 @@ EOL
     cat >> ${NAME}/README.md <<"EOL"
 ## Python Environment
 
-Developed and works best with `python 3.6.1`+.
+Developed and works best with `python 3.6.1`+. Setup a VM environment with `conda` or `virtualenv`.
 
-Once a VM environment is setup with `conda` or `virtualenv` the project dependencies can be restored with:
+For a brand new project developers may need to run:
 
-`pip install -r requirements.txt`
+`pip-compile --output-file requirements.txt requirements.in` to create the requirements.txt
+
+and for the development/testing only dependencies:
+
+`pip-compile --output-file dev-requirements.txt dev-requirements.in`
+
+
+ The project dependencies can then be restored with:
+
+`pip install -r requirements.txt -r dev-requirements.txt`
 
 
 ## Tests
@@ -265,9 +289,11 @@ import pytest
 PROJECT_ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(0, PROJECT_ROOT_DIR)
 EOL
-}
 
-touch ${NAME}/requirements.txt
+cat > ${NAME}/conftest.py <<EOL
+collect_ignore = ["setup.py"]
+EOL
+}
 
 if [[ ! -e ${NAME}/README.md ]]
     then
@@ -289,9 +315,14 @@ if [[ ! -e ${NAME}/setup.cfg ]]
         write_setup_cfg
 fi
 
-if [[ ! -e ${NAME}/requirements-to-freeze.txt ]]
+if [[ ! -e ${NAME}/dev-requirements.in ]]
     then
-        write_test_requirements
+        write_dev_requirements
+fi
+
+if [[ ! -e ${NAME}/requirements.in ]]
+    then
+        write_requirements
 fi
 
 mkdir -p ${NAME}/tests
