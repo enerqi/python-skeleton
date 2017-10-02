@@ -238,20 +238,23 @@ function write_readme {
 
 EOL
     cat >> ${NAME}/README.md <<"EOL"
+
+# Name Me
+
+A brand new project. Summarise me.
+
+- Install `pip-tools` from pypi.
+- Put any initial package requirements into `requirements.in` and `dev-requirements.in`.
+- Run `pip-compile --output-file requirements.txt requirements.in` to create the requirements.txt file.
+- Run `pip-compile --output-file dev-requirements.txt dev-requirements.in` for the dev/testing only dependencies.
+- Edit `setup.cfg`
+
+
 ## Python Environment
 
 Developed and works best with `python 3.6.1`+. Setup a VM environment with `conda` or `virtualenv`.
 
-For a brand new project developers may need to run:
-
-`pip-compile --output-file requirements.txt requirements.in` to create the requirements.txt
-
-and for the development/testing only dependencies:
-
-`pip-compile --output-file dev-requirements.txt dev-requirements.in`
-
-
- The project dependencies can then be restored with:
+The project dependencies can then be restored with:
 
 `pip install -r requirements.txt -r dev-requirements.txt`
 
@@ -273,7 +276,7 @@ Run all functional tests:
 `python setup.py test` or `pytest tests`
 
 
-## Configuration
+## Configuration & Running
 ...
 
 EOL
