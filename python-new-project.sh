@@ -180,6 +180,9 @@ ENV/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+# mypy static typechecker
+.mypy_cache
+
 EOL
 }
 
@@ -241,18 +244,21 @@ EOL
 
 # Name Me
 
-A brand new project. Summarise me.
+A brand new project. Summarise me. Getting started:
 
-- Install `pip-tools` from pypi.
-- Put any initial package requirements into `requirements.in` and `dev-requirements.in`.
+- Run `pip install pip-tools` if you do not have pip-tools installed (per-user instead of in the virtualenv is fine).
+- Enter your python virtual env
+- Add/remove any initial package requirements in `requirements.in` and `dev-requirements.in`.
 - Run `pip-compile --output-file requirements.txt requirements.in` to create the requirements.txt file.
 - Run `pip-compile --output-file dev-requirements.txt dev-requirements.in` for the dev/testing only dependencies.
+- [Run `pip-sync requirements.txt dev-requirements.txt` to remove any superfluous packages from the virtualenv]
 - Edit `setup.cfg`
 
 
 ## Python Environment
 
-Developed and works best with `python 3.6.1`+. Setup a VM environment with `conda` or `virtualenv`.
+Developed and works best with `python 3.6.1`+. Setup a VM environment with `conda` or `virtualenv` e.g.
+`conda create -n myprojectenv python=3.6`.
 
 The project dependencies can then be restored with:
 
