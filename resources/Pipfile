@@ -1,0 +1,36 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+daiquiri = "*"
+docopt = "*"
+pbr = "*"
+result = "*"
+
+
+[dev-packages]
+flake8 = "*"
+hypothesis = "*"
+hypothesis-pytest = "*"
+ipython = "*"
+mypy = "*"
+pudb = "*"
+pytest = "==3.2.5"  # version 3.4.0 failing with (pytest-)pudb.
+pytest-capturelog = "*"
+pytest-cov = "*"
+pytest-flake8 = "*"
+pytest-mock = "*"
+pytest-mypy = "*"
+pytest-pep8 = "*"
+pytest-profiling = "*"
+pytest-pudb = "*"
+pytest-runner = "*"
+pytest-sugar = "*"
+pytest-xdist = "*"
+
+
+[requires]
+python_version = "3.6"

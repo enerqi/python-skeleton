@@ -1,0 +1,26 @@
+# services:
+
+pipeline:
+    test:
+        image: python
+        environment:
+            - LANG=en_GB.UTF-8            
+        commands:
+            - cp -R . /root/drone
+            - cd /root/drone
+            - ./clean.sh
+            - pipenv install -d 
+            - flake8 .
+            - mypy .
+            - python3 tests
+
+    non_dev_sanity_build:
+        image: python
+        environment:
+            - LANG=en_GB.UTF-8            
+        commands:
+            - cp -R . /root/drone
+            - cd /root/drone
+            - ./clean.sh
+            - pipenv install
+                      
