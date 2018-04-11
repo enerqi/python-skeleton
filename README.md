@@ -11,6 +11,8 @@ python3 python-new-project.py /path/to/myproject   # create a new project in /pa
 python3 python-new-project.py myproject --force  # create the new project overwriting any existing skeleton files
 ```
 
+---
+
 # Notes
 
 ## Virtual Environment
@@ -19,7 +21,7 @@ It's easy to get library/tool version mismatches when not working in an isolated
 
 - [Pipenv](https://pipenv.org/) is the latest python tooling for creating virtual environments and dealing with dependencies. One problem I've seen
 so far is that you can't update the version of one dependency without trying to update every dependency to latest even when unnecessary.
-- [Anaconda](https://docs.continuum.io/anaconda/install) is a tool for creating isolated environment management. Virtualenv could also be used but anaconda has better support for building non-python code. When using Pipenv you probably are not going to need it, though pipenv might be 
+- [Anaconda](https://docs.continuum.io/anaconda/install) is a tool for creating isolated environment management. Virtualenv could also be used but anaconda has better support for building non-python code. When using Pipenv you probably are not going to need it, though pipenv might be
 able to use an arbritrary environment.
 - `pip` and `virtualenv` can be avoided when using Pipenv - pipenv uses them in its implementation.
 - `pip-tools` is a good option for carefully managing production and development dependencies if not using `pipenv`.
@@ -40,6 +42,7 @@ from .sibling import example  # relative
 ```
 
 ## Tool config
+
 Most tools (e.g. coverage, pytest, flake8, mypy) now allow their config to go in the one file `setup.cfg` instead of
 requiring their own file (e.g. `mypy.ini`, `.flake`, and `pytest.ini`).
 
@@ -74,7 +77,7 @@ PYTHONPATH=$BASEDIR python3 app/main.py
 
 ## Running pytest tests and lints from setup.py
 
-We use the [PBR](https://docs.openstack.org/pbr/latest/) build library to help with such things. With `pytest-runner` as a setup dependency and 
+We use the [PBR](https://docs.openstack.org/pbr/latest/) build library to help with such things. With `pytest-runner` as a setup dependency and
 setting `test` as an alias for pytest in the `setup.cfg` file it just works.
 
 ## Coverage reports on tests
@@ -89,7 +92,7 @@ See `pytest --help`. For example, to run coverage in html or xml on `mymodule` a
 If using python3 and specificaly python3.5+ we can use type hints, that at least serves as minimal documentation and
 provides some support for type driven development / domain modelling.
 
-The [MyPy](http://mypy.readthedocs.io/en/latest/) project is a linter that will try to check those types statically. 
+The [MyPy](http://mypy.readthedocs.io/en/latest/) project is a linter that will try to check those types statically.
 It is however, an alpha status project, despite being > 5 years old.
 
 ## Enabling doctests in combination with pytest & flask

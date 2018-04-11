@@ -6,12 +6,12 @@ Python project skeleton generator.
 Usage:
     python-new-project <project_name_or_path> [--force]
 
-The 'project_name_or_path' specifies a relative project directory (to the current working directory) or the 
+The 'project_name_or_path' specifies a relative project directory (to the current working directory) or the
 path to a project directory (relative or absolute). The project directory need not exist.
 
 The '--force' positional argument will delete the project directory if it already exists.
 """
-# [http://docopt.org/](Docopt) is nice, but it's a 3rd party dependency
+# [DocOpt](http://docopt.org/) is nice, but it's a 3rd party dependency
 
 import os
 from os.path import join
@@ -93,15 +93,15 @@ def readme():
     A brand new project. Summarise me. Getting started:
 
     - Add/remove dependencies to the `Pipfile`
-    - Use [https://pipenv.org/](pipenv) to install project dependencies and create a virtual environment
+    - Use [PipEnv](https://pipenv.org/) to install project dependencies and create a virtual environment
     - Edit `setup.cfg`
 
 
     ## Python Environment
 
-    Developed and works best with `python 3.6`+. Use [https://pipenv.org/](pipenv) to install project dependencies and create a virtual environment.
+    Developed and works best with `python 3.6`+. Use [PipEnv](https://pipenv.org/) to install project dependencies and create a virtual environment.
 
- 
+
     ## Tests
 
     Run linter code quality checks:
@@ -120,7 +120,7 @@ def readme():
 
     ## CI Docker Build
 
-    Get the command line [https://drone.io/](drone) client and run `drone exec`.
+    Get the command line [drone](https://drone.io/) client and run `drone exec`.
 
 
     ## Configuration & Running
