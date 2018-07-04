@@ -106,21 +106,21 @@ def readme():
 
     Run linter code quality checks:
 
-    `python setup.py flake8` or `flake8`
+    `flake8`
 
 
     Run static type checker:
 
-    `mypy .`
+    `mypy app tests`
 
 
     Run all functional tests:
 
-    `python setup.py test` or `pytest tests`
+    `pytest tests --cov app`  # optonally with required code coverage `--cov-fail-under 80`
 
     ## CI Docker Build
 
-    Get the command line [drone](https://drone.io/) client and run `drone exec`.
+    Install docker and get the command line [drone](https://drone.io/) client and run `drone exec`.
 
 
     ## Configuration & Running
@@ -156,6 +156,7 @@ try:
     copy_file_to_project("setup.cfg", "setup.cfg")
     copy_file_to_project("setup.py", "setup.py")
     copy_file_to_project("tests_conftest.py", "tests/conftest.py")
+    copy_file_to_project("CHANGELOG.md", "CHANGELOG.md")
     readme()
 
 except Exception as e:

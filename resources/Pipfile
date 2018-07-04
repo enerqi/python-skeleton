@@ -12,13 +12,14 @@ result = "*"
 
 
 [dev-packages]
+colorama = "*"
 flake8 = "*"
 hypothesis = "*"
 hypothesis-pytest = "*"
 ipython = "*"
 mypy = "*"
 pudb = "*"
-pytest = "==3.2.5"  # version 3.4.0 failing with (pytest-)pudb.
+pytest = "*"
 pytest-capturelog = "*"
 pytest-cov = "*"
 pytest-flake8 = "*"

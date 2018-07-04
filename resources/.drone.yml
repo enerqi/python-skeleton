@@ -4,23 +4,23 @@ pipeline:
     test:
         image: python
         environment:
-            - LANG=en_GB.UTF-8            
+            - LANG=en_GB.UTF-8
         commands:
             - cp -R . /root/drone
             - cd /root/drone
             - ./clean.sh
-            - pipenv install -d 
+            - pipenv install --system --dev --deploy
             - flake8 .
             - mypy .
-            - python3 tests
+            - pytest tests --cov app --cov-fail-under 0
 
     non_dev_sanity_build:
         image: python
         environment:
-            - LANG=en_GB.UTF-8            
+            - LANG=en_GB.UTF-8
         commands:
             - cp -R . /root/drone
             - cd /root/drone
             - ./clean.sh
             - pipenv install
-                      
+
