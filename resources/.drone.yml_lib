@@ -9,11 +9,12 @@ pipeline:
         commands:
             - cp -R . /root/drone
             - cd /root/drone
+            - ./clean.sh
             - pip3 install pipenv
-            - pipenv install --system --dev --deploy
-            - flake8 .
-            - mypy .
-            - pytest tests --cov app --cov-fail-under 0
+            - pipenv install -e '.[dev]'
+            - pipenv run flake8 .
+            - pipenv run mypy {project_name} tests
+            - pipenv run pytest tests --cov {project_name} --cov-fail-under 0
 
     non_dev_sanity_build:
         image: python
@@ -23,6 +24,7 @@ pipeline:
         commands:
             - cp -R . /root/drone
             - cd /root/drone
+            - ./clean.sh
             - pip3 install pipenv
-            - pipenv install --system --deploy
+            - pipenv install -e .
 

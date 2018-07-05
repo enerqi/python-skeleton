@@ -1,0 +1,30 @@
+# services:
+
+pipeline:
+    test:
+        image: python
+        environment:
+            - LC_ALL=C.UTF-8
+            - LANG=en_GB.UTF-8
+        commands:
+            - cp -R . /root/drone
+            - cd /root/drone
+            - ./clean.sh
+            - pip3 install pipenv
+            - pipenv install --system --dev --deploy
+            - flake8 .
+            - mypy .
+            - pytest tests --cov app --cov-fail-under 0
+
+    non_dev_sanity_build:
+        image: python
+        environment:
+            - LC_ALL=C.UTF-8
+            - LANG=en_GB.UTF-8
+        commands:
+            - cp -R . /root/drone
+            - cd /root/drone
+            - ./clean.sh
+            - pip3 install pipenv
+            - pipenv install --system --deploy
+

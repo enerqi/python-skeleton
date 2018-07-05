@@ -1,5 +1,4 @@
 from setuptools import setup
 
-setup(setup_requires=['flake8', 'pbr', 'pytest-runner'],
-      pbr=True,
+setup(setup_requires=['setuptools_scm'],
       tests_require=['pytest'])
