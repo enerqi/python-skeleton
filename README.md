@@ -6,25 +6,32 @@ Examples:
 
 ```bash
 
-python3 python-new-project.py myproject   # create a new project in ./myproject
-python3 python-new-project.py /path/to/myproject   # create a new project in /path/to/myproject
-python3 python-new-project.py myproject --force  # create the new project overwriting any existing skeleton files
+python3 python-new-project.py myproject --app  # create a new application based project in ./myproject
+python3 python-new-project.py /path/to/myproject --lib   # create a library project in /path/to/myproject
+python3 python-new-project.py myproject --app --force  # create the new project overwriting any existing skeleton files
 ```
 
 ---
 
 # Notes
 
+## Libraries vs Applications
+
+Libraries specify abstract dependencies (including dev-packages) in `setup.py` but may use Pipenv to create a virtual env.
+Applications specify exact dependencies in a `Pipfile` + `Pipfile.lock` that are checked into the source code. A `setup.py` file is not needed as there need not be any packaging.
+
 ## Virtual Environment
 
 It's easy to get library/tool version mismatches when not working in an isolated environment on a development machine. It is more feasible to install globally if using something like jails/docker.
 
-- [Pipenv](https://pipenv.org/) is the latest python tooling for creating virtual environments and dealing with dependencies. One problem I've seen
-so far is that you can't update the version of one dependency without trying to update every dependency to latest even when unnecessary.
+- [Pipenv](https://pipenv.org/) is the latest python tooling for creating virtual environments and dealing with dependencies.
 - [Anaconda](https://docs.continuum.io/anaconda/install) is a tool for creating isolated environment management. Virtualenv could also be used but anaconda has better support for building non-python code. When using Pipenv you probably are not going to need it, though pipenv might be
 able to use an arbritrary environment.
 - `pip` and `virtualenv` can be avoided when using Pipenv - pipenv uses them in its implementation.
 - `pip-tools` is a good option for carefully managing production and development dependencies if not using `pipenv`.
+
+A `Pipfile` and `Pipfile.lock` should *not* be committed to the project for library based projects - only abstract
+dependencies should be specified in the `setup.py` for libraries.
 
 
 ## Import Style
@@ -74,11 +81,6 @@ A shell script per runnable main file seems a reasonable approach, for example:
 BASEDIR=$(dirname "$0")
 PYTHONPATH=$BASEDIR python3 app/main.py
 ```
-
-## Running pytest tests and lints from setup.py
-
-We use the [PBR](https://docs.openstack.org/pbr/latest/) build library to help with such things. With `pytest-runner` as a setup dependency and
-setting `test` as an alias for pytest in the `setup.cfg` file it just works.
 
 ## Coverage reports on tests
 
