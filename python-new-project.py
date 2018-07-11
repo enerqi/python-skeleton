@@ -152,9 +152,12 @@ def readme():
     - Edit `setup.py`
 
 
-    ## Python Environment
+    ## {project_name} as a library dependency
 
-    Developed and works best with `python 3.6`+.
+    Requires `python 3.6`+. Follows semantic versioning.
+
+    ## Develop {project_name}
+
     This is library code - use pipenv to install the abstract dependencies in a virtual environment from
     the `setup.py` file.
 
