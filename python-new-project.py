@@ -288,11 +288,14 @@ try:
         copy_file_to_project(".gitignore_lib", ".gitignore")
         setup_py()  # lib only
 
-    copy_file_to_project("clean.sh", "clean.sh")
     copy_file_to_project("setup.cfg", "setup.cfg")
     copy_file_to_project("tests_conftest.py", "tests/conftest.py")
     copy_file_to_project("CHANGELOG.md", "CHANGELOG.md")
     readme()
+
+    scripts_dir = join(project_dir, "scripts")
+    mkdirs(scripts_dir)
+    copy_file_to_project("clean.sh", "scripts/clean.sh")
 
 except Exception as e:
     clean_abort(str(e))
