@@ -286,7 +286,6 @@ try:
         setup_py()  # lib only
 
     copy_file_to_project("clean.sh", "clean.sh")
-    copy_file_to_project("conftest.py", "conftest.py")
     copy_file_to_project("setup.cfg", "setup.cfg")
     copy_file_to_project("tests_conftest.py", "tests/conftest.py")
     copy_file_to_project("CHANGELOG.md", "CHANGELOG.md")
