@@ -7,4 +7,6 @@ rm -rf .cache
 rm -rf .egg
 rm -rf .eggs
 rm -rf .mypy_cache
+rm -rf .pytest_cache
+rm -rf .hypothesis
 rm -rf dist

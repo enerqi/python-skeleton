@@ -288,6 +288,7 @@ try:
         copy_file_to_project(".gitignore_lib", ".gitignore")
         setup_py()  # lib only
 
+    copy_file_to_project(".editorconfig", ".editorconfig")
     copy_file_to_project("setup.cfg", "setup.cfg")
     copy_file_to_project("tests_conftest.py", "tests/conftest.py")
     copy_file_to_project("CHANGELOG.md", "CHANGELOG.md")
