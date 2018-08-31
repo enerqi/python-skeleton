@@ -20,6 +20,7 @@ The '--force' positional argument will delete the project directory if it alread
 import os
 from os.path import join
 import shutil
+import stat
 from subprocess import check_output
 import sys
 import textwrap
@@ -78,6 +79,11 @@ def mkdirs(directory):
 
 def touch(file_path):
     open(file_path, 'a').close()
+
+
+def set_file_exec_permission(file_path):
+    current_mode = os.stat(file_path).st_mode
+    os.chmod(file_path, current_mode | stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH)
 
 
 def nuke_tree(directory):
@@ -297,6 +303,7 @@ try:
     scripts_dir = join(project_dir, "scripts")
     mkdirs(scripts_dir)
     copy_file_to_project("clean.sh", "scripts/clean.sh")
+    set_file_exec_permission(join(project_dir, "scripts/clean.sh"))
 
 except Exception as e:
     clean_abort(str(e))
